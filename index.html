@@ -9,7 +9,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 @media screen{
 body{background:#111318;min-height:100vh;display:flex;flex-direction:column;align-items:center;font-family:'DM Sans',sans-serif;color:#e8e8e8}
-.app-header{width:100%;padding:38px 0 26px;text-align:center}
+.app-header{width:100%;padding:28px 0 18px;text-align:center}
 .app-header h1{font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:6px;text-transform:uppercase;color:#777}
 .app-layout{display:flex;gap:34px;align-items:flex-start;width:100%;max-width:1220px;padding:0 28px 80px}
 .side-panel{width:295px;flex-shrink:0;position:sticky;top:20px}
@@ -40,9 +40,24 @@ body{background:#111318;min-height:100vh;display:flex;flex-direction:column;alig
 .btn-gen:hover{background:linear-gradient(135deg,#4a5078,#303560);color:#ccd0f0;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.4)}
 .preview-panel{flex:1;min-width:0}
 .preview-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#333;margin-bottom:12px}
-.preview-wrapper{background:#0d0f14;border:1px solid #1e2128;border-radius:12px;padding:28px;display:flex;align-items:center;justify-content:center;min-height:280px}
-.medal-wrap{display:flex;align-items:center;justify-content:center}
-.medal-wrap svg{filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));transition:all .4s}
+.preview-wrapper{background:#0d0f14;border:1px solid #1e2128;border-radius:12px;padding:28px;display:flex;align-items:center;justify-content:center;min-height:280px;overflow:hidden}
+.cert-scale-wrap{transform-origin:top center;transition:transform .3s}
+.medal-wrap{display:flex;align-items:center;justify-content:center;width:100%}
+.medal-wrap svg{filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));transition:all .4s;max-width:100%;height:auto}
+}
+/* ── RESPONSIVE ── */
+@media screen and (max-width:900px){
+.app-layout{flex-direction:column;padding:0 16px 60px;gap:20px}
+.side-panel{width:100%;position:static}
+.preview-wrapper{padding:16px}
+}
+@media screen and (max-width:600px){
+.app-layout{padding:0 12px 50px}
+.app-header{padding:18px 0 12px}
+.app-header h1{font-size:10px;letter-spacing:3px}
+.form-panel{padding:16px}
+.level-card .mi{font-size:16px}
+.tab-btn{font-size:9px;letter-spacing:1px;padding:10px 0}
 }
 /* certificate */
 .certificate{width:750px;min-height:500px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:42px 60px 38px;text-align:center;transition:all .4s}
@@ -131,6 +146,7 @@ body{background:white!important;margin:0;padding:0}
     <div class="preview-label">Pré-visualização</div>
     <div class="preview-wrapper">
       <div id="pv-cert">
+        <div class="cert-scale-wrap" id="cert-scale-wrap">
         <div class="certificate cert-bronze" id="certificate">
           <div class="cc tl"><svg viewBox="0 0 50 50" fill="none"><path d="M4 46L4 4L46 4" stroke="currentColor" stroke-width="3"/><circle cx="4" cy="4" r="3" fill="currentColor"/><path d="M4 4L16 16" stroke="currentColor" stroke-width="1" opacity="0.4"/></svg></div>
           <div class="cc tr"><svg viewBox="0 0 50 50" fill="none"><path d="M4 46L4 4L46 4" stroke="currentColor" stroke-width="3"/><circle cx="4" cy="4" r="3" fill="currentColor"/><path d="M4 4L16 16" stroke="currentColor" stroke-width="1" opacity="0.4"/></svg></div>
@@ -146,6 +162,7 @@ body{background:white!important;margin:0;padding:0}
             <div class="sig-b"><div class="sig-l"></div><div class="sig-n" id="c-sig1">PROFESSOR(A)</div></div>
           </div>
         </div>
+        </div><!-- /cert-scale-wrap -->
       </div>
       <div id="pv-medal" style="display:none">
         <div class="medal-wrap" id="medal-wrap"></div>
@@ -457,9 +474,25 @@ function doPrint(type){
   setTimeout(()=>{window.print();setTimeout(()=>{document.title='Gerador de Certificados';},2000);},120);
 }
 
+
+function scaleCert(){
+  const wrap = document.getElementById('cert-scale-wrap');
+  const pw = document.querySelector('.preview-wrapper');
+  if(!wrap||!pw) return;
+  const available = pw.clientWidth - 56; // subtract padding
+  const certW = 750;
+  const scale = available < certW ? available / certW : 1;
+  wrap.style.transform = 'scale('+scale+')';
+  // adjust wrapper height so it matches scaled cert height
+  const certH = wrap.querySelector('.certificate').offsetHeight;
+  pw.style.minHeight = Math.max(200, certH * scale + 56) + 'px';
+}
+window.addEventListener('resize', scaleCert);
+
 document.getElementById('f-data').value=new Date().toISOString().split('T')[0];
 updCert();
 updMedal();
+scaleCert();
 </script>
 </body>
 </html>
