@@ -82,16 +82,18 @@ body{background:#111318;min-height:100vh;display:flex;flex-direction:column;alig
 .cert-gold{--cb:#9A7200;--ci:#DAA520;--ca:#B8860B;--ct:#8B6914;--cbg:linear-gradient(135deg,#DAA520,#9A7200);background:#fefae0}
 .cert-diamond{--cb:#1A5276;--ci:#2E86C1;--ca:#1A5276;--ct:#154360;--cbg:linear-gradient(135deg,#2E86C1,#1A5276);background:#e8f2fb}
 @media print{
+@page{margin:0;size:A4 portrait}
 *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-body{background:white!important;margin:0;padding:0}
+body{background:white!important;margin:0!important;padding:0!important}
 .app-header,.side-panel,.preview-label{display:none!important}
 .app-layout{display:block!important;padding:0!important;margin:0!important}
 .preview-panel{display:block!important}
-.preview-wrapper{background:white!important;border:none!important;border-radius:0!important;padding:0!important;margin:0!important;display:flex!important;align-items:center!important;justify-content:center!important;min-height:100vh!important}
-.certificate{width:100%!important;min-height:96vh!important;padding:52px 76px!important}
+.preview-wrapper{background:white!important;border:none!important;border-radius:0!important;padding:0!important;margin:0!important;display:flex!important;align-items:center!important;justify-content:center!important;width:100vw!important;height:100vh!important}
+.cert-scale-wrap{transform:none!important;width:100%!important;height:100%!important}
+.certificate{width:100%!important;height:100vh!important;min-height:unset!important;padding:48px 64px!important;display:flex!important}
 .c-title{font-size:70px!important}
-.medal-wrap svg{width:520px!important;height:auto!important;filter:none!important}
-.medal-wrap{width:100%!important;min-height:100vh!important;display:flex!important;align-items:center!important;justify-content:center!important}
+.medal-wrap{width:100vw!important;height:100vh!important;display:flex!important;align-items:center!important;justify-content:center!important}
+.medal-wrap svg{width:70vmin!important;height:auto!important;filter:none!important}
 }
 </style>
 </head>
